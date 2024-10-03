@@ -1,101 +1,196 @@
-import Image from "next/image";
+import Footer from "@/components/Footer";
+import ProductCard from "@/components/ProductCard";
+import Testimonials from "@/components/Testimonials";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { products, testimonials } from "@/data";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="w-full">
+      {/* Hero Section
+      <section className="relative h-3/5">
+        <div className="relative h-full w-full">
+          <img
+            src="/assets/images/hero-1.png"
+            alt="Hero Image"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white z-10">
+            <h1 className="text-4xl font-bold sm:text-5xl">
+              Improve Your Indoor Air Quality
+            </h1>
+            <p className="mt-4 text-lg">
+              Discover advanced vantilation systems.
+            </p>
+            <Button className="mt-6  text-white px-8 py-3" as Child>
+              <Link href="/products">View Products</Link>
+            </Button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section> */}
+      <header>
+        {" "}
+        {/* Hero Container */}{" "}
+        <div className="mx-auto max-w-7xl px-5 py-16 md:px-10 md:pt-20">
+          {" "}
+          {/* Component */}{" "}
+          <div className="mx-auto mb-8 w-full max-w-3xl text-center md:mb-12 lg:mb-16">
+            {" "}
+            {/* Hero Title */}{" "}
+            <h1 className="mb-4 text-4xl font-bold md:text-7xl">
+              {" "}
+              Improve Your Indoor Air Quality{" "}
+            </h1>
+            <p className="mx-auto mb-5 max-w-lg text-sm text-gray-500 sm:text-xl md:mb-6 lg:mb-8">
+              {" "}
+              Discover advanced vantilation systems{" "}
+            </p>{" "}
+            {/* Hero Button */}{" "}
+            <div className="flex items-stretch justify-center">
+              <a
+                href="/products"
+                className="mr-5 inline-block rounded-md bg-black px-8 py-4 text-center font-semibold text-white md:mr-6 lg:mr-8"
+              >
+                {" "}
+                Get Started{" "}
+              </a>
+              {/* <a
+                href="#"
+                className="flex flex-row items-center justify-center rounded-md border border-solid border-black px-6 py-3 font-bold text-black"
+              >
+                <img
+                  src="https://assets.website-files.com/6458c625291a94a195e6cf3a/6458c625291a944888e6cf97_PlayCircle%20(1).svg"
+                  alt=""
+                  className="mr-2 inline-block max-h-4 w-5"
+                />
+                <p className="text-sm text-black sm:text-base">Watch Demo</p>
+              </a> */}
+            </div>
+          </div>{" "}
+          {/* Hero Image */}{" "}
+        </div>
+        <div className="rounded-2xl p-3 md:mx-10 bg-gray-50">
+          <div className="rounded-2xl max-h-[512px] overflow-hidden">
+            <img
+              // src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074"
+              src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2Fbg-about.png?alt=media&token=0d5ea1c5-61cf-4b0d-beab-bd023e3d9ee8"
+              // src="/assets/images/hero-1.png"
+              alt="hero image"
+              className="inline-block w-full object-cover "
+            />
+          </div>
+        </div>
+      </header>
+
+      {/* Facts */}
+      <section>
+        {" "}
+        {/* Container */}{" "}
+        <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-20">
+          {" "}
+          {/* Title */}{" "}
+          <h2 className="mb-8 text-center text-3xl font-bold md:mb-12 md:text-5xl lg:mb-16">
+            {" "}
+            We get results{" "}
+          </h2>{" "}
+          {/* Content */}{" "}
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:gap-6">
+            {" "}
+            {/* Item */}{" "}
+            <div className="relative p-8 md:p-10">
+              <h3 className="mb-4 text-3xl font-bold md:text-5xl">1.5M</h3>
+              <p className="text-sm text-gray-500">
+                {" "}
+                Lorem ipsum dolor sit amet, elit ut aliquam, purus sit amet
+                luctus venenatis elit ut aliquam, purus sit amet luctus{" "}
+              </p>
+              <div className="absolute right-0 top-[29%] hidden h-2/5 border-r border-gray-300 md:block"></div>
+            </div>{" "}
+            {/* Item */}{" "}
+            <div className="relative p-8 md:p-10">
+              <h3 className="mb-4 text-3xl font-bold md:text-5xl">41%</h3>
+              <p className="text-sm text-gray-500">
+                {" "}
+                Lorem ipsum dolor sit amet, elit ut aliquam, purus sit amet
+                luctus venenatis elit ut aliquam, purus sit amet luctus{" "}
+              </p>
+              <div className="absolute right-0 top-[29%] hidden h-2/5 border-r border-gray-300 md:block"></div>
+            </div>{" "}
+            {/* Item */}{" "}
+            <div className="p-8 md:p-10">
+              <h3 className="mb-4 text-3xl font-bold md:text-5xl">3657+</h3>
+              <p className="text-sm text-gray-500">
+                {" "}
+                Lorem ipsum dolor sit amet, elit ut aliquam, purus sit amet
+                luctus venenatis elit ut aliquam, purus sit amet luctus{" "}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products Section */}
+      <section className="my-16 px-4">
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Featured Products
+        </h2>
+        <div className="grid grid-cols-1  gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((product, idx) => (
+            <ProductCard
+              key={idx}
+              id={product.id}
+              name={product.name}
+              img={product.image}
+              price={product.price}
+              // description={product.description}
+            />
+          ))}
+        </div>
+        <div className="flex justify-center items-center">
+          <Button className="mt-6  text-white px-8 py-3" as Child>
+            <Link href="/products">Show More</Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      {/* <section className="my-16 px-4">
+        <h2 className="text-3xl font-bold text-center mb-8">
+          What Our Clients Say
+        </h2>
+        <InfiniteMovingCards
+          items={testimonials}
+          className="-px-72 w-full"
+          direction="left"
+          speed="slow"
+        />
+        <InfiniteMovingCards
+          items={testimonials}
+          className="w-full"
+          direction="right"
+          speed="slow"
+        />
+      </section> */}
+      <Testimonials />
+
+      {/* Footer */}
+      {/* <footer className="bg-gray-800 text-white py-8">
+        <div className="container mx-auto text-center">
+          <p>&copy; 2024 Ventilation Systems. All rights reserved.</p>
+          <div className="mt-4">
+            <Button variant="link" className="text-white mx-2" as Child>
+              <Link href={"/privacy-policy"}>Privacy Policy</Link>
+            </Button>
+            <Button variant="link" className="text-white mx-2" as Child>
+              <Link href="/terms">Terms & Conditions</Link>
+            </Button>
+          </div>
+        </div>
+      </footer> */}
+      <Footer />
     </div>
   );
 }
