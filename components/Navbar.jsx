@@ -44,7 +44,7 @@ const Navbar = () => {
 
           {/* Mobile Hamburger Menu */}
           <div className="flex items-center md:hidden">
-            <Button onClick={toggleMenu}>
+            <Button variant="ghost" onClick={toggleMenu}>
               {isOpen ? (
                 <X className="w-6 h-6" />
               ) : (
