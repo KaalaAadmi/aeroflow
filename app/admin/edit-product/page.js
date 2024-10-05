@@ -17,7 +17,7 @@ const AddProduct = () => {
       <div className="mx-auto max-w-7xl px-5 py-16 text-center md:px-10 md:py-20">
         {" "}
         {/* Component */}{" "}
-        <h2 className="text-3xl font-bold md:text-5xl">Add Product</h2>
+        <h2 className="text-3xl font-bold md:text-5xl">Edit Product</h2>
         <p className="mx-auto mb-8 mt-4 max-w-lg text-gray-500 md:mb-12 lg:mb-16">
           {" "}
           Lorem ipsum dolor sit amet consectetur adipiscing elit ut

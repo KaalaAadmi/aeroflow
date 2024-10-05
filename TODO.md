@@ -5,7 +5,7 @@
 - [x] home
 - [x] about
 - [ ] admin
-  - [ ] add product
+  - [x] add product
   - [ ] edit product
   - [ ] floor plans
   - [x] products
@@ -26,3 +26,27 @@
 
 - [x] Navbar
 - [x] Product Card for Featured Home
+- [x] Testimonials
+- [x] ProductTable for admin
+- [x] Footer
+
+## API:
+
+- [x] /upload-files
+  - [ ] upload images and pdfs to cloudinary and add link to mongodb
+- [x] /add-product
+  - [ ] upload images to cloudinary and add link to mongodb
+- [x] /update-product
+- [x] /get-all-product
+
+## AFTER API BUILDING:
+
+- [ ] Secure /admin routes
+- [ ] Populate fields for admin/edit-product
+- [ ] handle files
+  - [ ] admin/add-products
+  - [ ] contact
+- [ ] form values for contact
+- [ ] Dashboard for admin
+  - [ ] charts based on number of queries from google analytics
+- [ ] Slack Integration
