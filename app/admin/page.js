@@ -16,7 +16,6 @@ import ProductTable from "@/components/ProductTable";
 import { Button } from "@/components/ui/button";
 
 export default function Admin() {
-  const [active, setActive] = useState(<Dashboard />);
   const links = [
     {
       label: "Dashboard",
@@ -51,6 +50,7 @@ export default function Admin() {
       component: <Logout />,
     },
   ];
+  const [active, setActive] = useState(<Dashboard />);
   const [open, setOpen] = useState(false);
   return (
     <div className="w-screen h-full">
@@ -166,8 +166,8 @@ const ProductList = () => {
             <h1 className="text-2xl font-semibold">Product List</h1>
           </div>
           <div className="flex gap-2">
-            <Button as Child>
-              <Link href="/admin/add-product">Add Product</Link>
+            <Button>
+              <div onClick={() => setActive(<AddProduct />)}>Add Product</div>
             </Button>
           </div>
         </div>
@@ -178,6 +178,23 @@ const ProductList = () => {
       </div>
     </div>
   );
+};
+
+const AddProduct = () => {
+  <div className="flex flex-1">
+    <div className="p-2 md:p-10 rounded-tl-2xl border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+      <div className="flex">
+        <div className="flex-1">
+          <h1 className="text-2xl font-semibold">Add Product</h1>
+        </div>
+        <div className="flex gap-2">
+          <Button asChild>
+            <Link href="/admin">Back</Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>;
 };
 
 const Settings = () => {

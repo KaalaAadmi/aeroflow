@@ -1,31 +1,82 @@
 "use client";
-import MapComponent from "@/components/MapComponent";
+// import MapComponent from "@/components/MapComponent";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
-// import { Input } from "@/components/ui/input";
-import { Input } from "@nextui-org/input";
-import { Textarea } from "@nextui-org/input";
-import { Select, SelectItem } from "@nextui-org/select";
+// import { Input } from "@nextui-org/input";
+// import { Textarea } from "@nextui-org/input";
+// import {  } from "@nextui-org/select";
 
 import { Label } from "@/components/ui/label";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { Textarea } from "@/components/ui/textarea";
-import { House, MailOpen, MapPin, Phone } from "lucide-react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+
+import { ChevronsUpDown, House, MailOpen, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 const Contact = () => {
   const [files, setFiles] = useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
   const handleFileUpload = (files) => {
     setFiles(files);
-    console.log(files);
+    // console.log(files);
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+
+      // Append form fields to FormData
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("email", data.email);
+      formData.append("message", data.message);
+      formData.append("source", data.source);
+
+      // Append each file to FormData
+      for (let i = 0; i < files.length; i++) {
+        formData.append("file", files[i]);
+      }
+      console.log(formData);
+      // Make the API request
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/contact`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        alert("Contact saved successfully");
+        console.log(result);
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("An error occurred while submitting the form");
+    }
   };
 
   return (
@@ -100,52 +151,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* <section id="form" className="bg-gray-100 py-12">
-        <div className="container mx-auto">
-          <h3 className="text-3xl font-bold text-center mb-6">Get In Touch</h3>
-          <form className="max-w-2xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Input type="text" label="Name" labelPlacement="outside" />
-              <Input type="email" label="Email" labelPlacement="outside" />
-              <Input type="tel" label="Phone Number" labelPlacement="outside" />
-              <Input
-                type="text"
-                label="Subject/Enquiry"
-                labelPlacement="outside"
-              />
-            </div>
-            <Textarea
-              className="w-full mt-6"
-              label="Message"
-              labelPlacement="outside"
-            />
-
-            <Select
-              labelPlacement="outside"
-              label="Where did you hear about us?"
-              className="w-full mt-12 pt-6"
-            >
-              <SelectItem value="google">Google/Bing/Yahoo</SelectItem>
-              <SelectItem value="social-media">Social Media</SelectItem>
-              <SelectItem value="existing-customer">
-                Existing Customer
-              </SelectItem>
-            </Select>
-            {/* File Upload */}
-
-      {/*<div className="mt-6 w-full max-w-4xl mx-auto h-4/6 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-              <FileUpload onChange={handleFileUpload} />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full mt-6" // bg-blue-600 text-white py-4 rounded"
-            >
-              Submit
-            </Button>
-          </form>
-        </div>
-      </section> */}
       <section id="form">
         {" "}
         {/* Container */}{" "}
@@ -160,17 +165,22 @@ const Contact = () => {
           </p>{" "}
           {/* Form */}{" "}
           <form
+            onSubmit={handleSubmit(onSubmit)}
             name="wf-form-name"
             method="get"
             className="mx-auto mb-4 text-left sm:px-4 md:px-20"
           >
             <div className="mb-4 grid w-full grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name-2" className="mb-1 font-medium">
+                <label htmlFor="fname" className="mb-1 font-medium">
                   {" "}
                   First Name{" "}
                 </label>
                 <input
+                  id="fname"
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
                   type="text"
                   className=" block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
                   placeholder=""
@@ -178,11 +188,15 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label htmlFor="name-3" className="mb-1 font-medium">
+                <label htmlFor="lname" className="mb-1 font-medium">
                   {" "}
                   Last Name{" "}
                 </label>
                 <input
+                  id="lname"
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
                   type="text"
                   className=" block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
                   placeholder=""
@@ -191,48 +205,98 @@ const Contact = () => {
               </div>
             </div>
             <div className="mb-4">
-              <label htmlFor="field" className="mb-1 font-medium">
+              <label htmlFor="tel" className="mb-1 font-medium">
                 {" "}
                 Phone Number{" "}
               </label>
               <input
+                id="tel"
+                {...register("phoneNumber")}
                 type="tel"
                 className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="field" className="mb-1 font-medium">
+              <label htmlFor="email" className="mb-1 font-medium">
                 {" "}
                 Email{" "}
               </label>
               <input
+                id="email"
+                {...register("email", { required: "Email is required" })}
                 type="text"
                 className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
               />
             </div>
             <div className="mb-5 md:mb-6 lg:mb-8">
-              <label htmlFor="field" className="mb-1 font-medium">
+              <label htmlFor="message" className="mb-1 font-medium">
                 {" "}
                 Message{" "}
               </label>
               <textarea
+                id="message"
+                placeholder="Message"
+                maxLength={5000}
+                className="mb-2.5 block h-auto min-h-44 w-full rounded-md border border-solid border-black px-3 py-2 text-sm text-black"
+                {...register("message", {
+                  validate: {
+                    pattern: (value) => !/[!]/.test(value),
+                  },
+                })}
+              />
+              {/* <textarea
+                id="message"
+                {...register("message", { required: "Message is required" })}
                 placeholder=""
                 maxLength="5000"
                 name="field"
                 className="mb-2.5 block h-auto min-h-44 w-full rounded-md border border-solid border-black px-3 py-2 text-sm text-black"
-              ></textarea>
+              ></textarea> */}
+            </div>
+            <div className="mb-5 md:mb-6 lg:mb-8">
+              <label htmlFor="option" className="mb-1 font-medium">
+                {" "}
+                Where did you hear about us?{" "}
+              </label>
+              <Select
+                id="option"
+                {...register("source", { required: "Source is required" })}
+                className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Web</SelectLabel>
+                    <SelectItem value="google">Google</SelectItem>
+                    <SelectItem value="bing">Bing</SelectItem>
+                    <SelectItem value="yahoo">Yahoo</SelectItem>
+                  </SelectGroup>
+                  <SelectGroup>
+                    <SelectLabel>Social Media</SelectLabel>
+                    <SelectItem value="facebook">Facebook</SelectItem>
+                    <SelectItem value="twitter">Twitter</SelectItem>
+                    <SelectItem value="instagram">Instagram</SelectItem>
+                  </SelectGroup>
+                  <SelectGroup>
+                    <SelectLabel>Other</SelectLabel>
+                    <SelectItem value="existing-customer">
+                      Existing Customer
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <div className="my-6 w-full  mx-auto h-4/6 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-              <FileUpload onChange={handleFileUpload} />
+              <FileUpload
+                onChange={handleFileUpload}
+                // files={files}
+                // setFiles={setFiles}
+              />
             </div>
             <div className="flex items-center cursor-pointer mb-1 justify-center pb-4 md:pl-5">
               {" "}
-              {/* Toggle */}{" "}
-              {/* <div className="relative w-12 h-7 transition duration-200 ease-linear rounded-full bg-gray-100"> */}{" "}
-              {/* Switch */}
-              {/* <span className="absolute left-1 top-1 transition duration-200 ease-in-out transform bg-white rounded-full w-5 h-5" /> */}
-              {/* </div> */}
-              {/* <input type="checkbox" className="hidden" /> */}
               <Switch id="privacy" />
               <Label htmlFor="privacy" className="ml-2">
                 By selecting this, you agree to the{" "}
@@ -244,20 +308,12 @@ const Contact = () => {
                   Terms & Conditions
                 </Button>
               </Label>
-              {/* <span
-                className="ml-4 inline-block cursor-pointer text-sm max-w-48 md:max-w-full"
-                htmlFor="checkbox"
-              >
-                {" "}
-                By selecting this, you agree to the{" "}
-                <a href="#"> Privacy Policy</a> and{" "}
-                <a href="#">Cookie Policy</a>
-              </span> */}
             </div>
             <input
               type="submit"
               value="Contact Sales"
               className="inline-block w-full rounded-md cursor-pointer bg-black px-6 py-3 text-center font-semibold text-white"
+              onClick={handleSubmit}
             />
           </form>
         </div>

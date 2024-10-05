@@ -45,14 +45,14 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   - [ ] add product
   - [ ] edit product
   - [ ] floor plans
-  - [ ] products
+  - [x] products
   - [ ] dashboard
 - [x] faq
 - [ ] floor plans
 - [x] privacy-policy
 - [x] products
   - [ ] filters
-- [ ] product details page
+- [x] product details page
 - [x] terms-and-conditions
 - [x] login
 - [x] register
@@ -63,4 +63,3 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [x] Navbar
 - [x] Product Card for Featured Home
-
