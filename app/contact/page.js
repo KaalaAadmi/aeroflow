@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { sendGAEvent } from "@next/third-parties/google";
 
 const Contact = () => {
   const [files, setFiles] = useState([]);
@@ -41,6 +42,11 @@ const Contact = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    try {
+      sendGAEvent({ event: "contact_form_submitted", data });
+    } catch (error) {
+      console.error("Google Analytics error:", error);
+    }
     try {
       const formData = new FormData();
 

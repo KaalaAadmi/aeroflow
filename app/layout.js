@@ -4,7 +4,7 @@ import { NextUIProvider } from "@nextui-org/system";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
-import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,18 +26,6 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <head>
-          {/* <!-- Google tag (gtag.js) --> */}
-          <Script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-NE7MGTNR4V"
-          ></Script>
-          <Script>
-            window.dataLayer = window.dataLayer || []; function gtag()
-            {dataLayer.push(arguments)}
-            gtag('js', new Date()); gtag('config', 'G-NE7MGTNR4V');
-          </Script>
-        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
@@ -47,6 +35,7 @@ export default function RootLayout({ children }) {
             <Toaster />
           </NextUIProvider>
         </body>
+        <GoogleAnalytics gaId="G-NE7MGTNR4V" />
       </html>
     </ClerkProvider>
   );
