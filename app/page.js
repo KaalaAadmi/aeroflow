@@ -9,28 +9,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="w-full">
-      {/* Hero Section
-      <section className="relative h-3/5">
-        <div className="relative h-full w-full">
-          <img
-            src="/assets/images/hero-1.png"
-            alt="Hero Image"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white z-10">
-            <h1 className="text-4xl font-bold sm:text-5xl">
-              Improve Your Indoor Air Quality
-            </h1>
-            <p className="mt-4 text-lg">
-              Discover advanced vantilation systems.
-            </p>
-            <Button className="mt-6  text-white px-8 py-3" as Child>
-              <Link href="/products">View Products</Link>
-            </Button>
-          </div>
-        </div>
-      </section> */}
       <header>
         {" "}
         {/* Hero Container */}{" "}
