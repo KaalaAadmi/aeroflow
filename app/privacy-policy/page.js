@@ -32,10 +32,11 @@ const PrivacyPolicy = () => {
             Terms and legal conditions
           </h4>
           <p className="mb-2 text-sm">
-            This Terms of Service ("Agreement") governs the use of design
-            services provided by Flowspark ("Company") to clients ("Client" or
-            "Clients"). By accessing or using any services provided by the
-            Company, Clients agree to be bound by these Terms of Service.
+            This Terms of Service (&quot;Agreement&quot;) governs the use of
+            design services provided by Flowspark (&quot;Company&quot;) to
+            clients (&quot;Client&quot; or &quot;Clients&quot;). By accessing or
+            using any services provided by the Company, Clients agree to be
+            bound by these Terms of Service.
           </p>
           {/* Term */}
           <h4 className="text-xl font-extrabold sm:text-xl md:text-2xl">
@@ -107,7 +108,7 @@ const PrivacyPolicy = () => {
             The Company shall not be liable for any direct, indirect,
             incidental, or consequential damages arising out of the use or
             inability to use the services provided. The Client acknowledges that
-            the Company's liability is limited to the amount paid for the
+            the Company&apos;s liability is limited to the amount paid for the
             services rendered.
           </p>
           <h4 className="text-xl font-extrabold sm:text-xl md:text-2xl">

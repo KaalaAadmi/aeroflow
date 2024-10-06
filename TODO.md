@@ -6,8 +6,8 @@
 - [x] about
 - [ ] admin
   - [x] add product
-  - [ ] edit product
-  - [ ] floor plans
+  - [x] edit product
+  - [x] floor plans
   - [x] products
   - [ ] dashboard
 - [x] faq
@@ -33,22 +33,22 @@
 ## API:
 
 - [x] /upload-files
-  - [ ] upload images and pdfs to cloudinary and add link to mongodb
+  - [x] upload images and pdfs to cloudinary and add link to mongodb
 - [x] /add-product
-  - [ ] upload images to cloudinary and add link to mongodb
+  - [x] upload images to cloudinary and add link to mongodb
 - [x] /update-product
 - [x] /get-all-product
 - [x] api for modifying product
-- [ ] api for deleting the images from cloudinary and mongodb
+- [x] api for deleting the images from cloudinary and mongodb
 
 ## AFTER API BUILDING:
 
 - [ ] Secure /admin routes
-- [ ] Populate fields for admin/edit-product
-- [ ] handle files
-  - [ ] admin/add-products
-  - [ ] contact
-- [ ] form values for contact
+- [x] Populate fields for admin/edit-product
+- [x] handle files
+  - [x] admin/add-products
+  - [x] contact
+- [x] form values for contact
 - [ ] Dashboard for admin
   - [ ] charts based on number of queries from google analytics
 - [ ] Slack Integration

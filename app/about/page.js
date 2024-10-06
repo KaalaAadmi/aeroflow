@@ -24,8 +24,8 @@ const About = () => {
                 <p className="flex-1">
                   Our journey is fueled by a passion for transforming ideas into
                   immersive visual experiences. Established with a vision to
-                  revolutionize the world of video content, we've evolved into a
-                  hub of creativity and innovation.
+                  revolutionize the world of video content, we&apos;ve evolved
+                  into a hub of creativity and innovation.
                 </p>
               </div>
               <div className="flex flex-col md:flex-row gap-5">

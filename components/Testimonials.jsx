@@ -16,8 +16,8 @@ const Testimonials = () => {
             </h2>
             {/* Subheading */}
             <p className="text-sm sm:text-base">
-              ElevateAI's AI-centric solutions have enabled businesses to scale
-              greater heights. Here's what they have to say...
+              ElevateAI&apos;s AI-centric solutions have enabled businesses to
+              scale greater heights. Here&apos;s what they have to say...
             </p>
           </div>
           {/* Contents */}
