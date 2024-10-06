@@ -1,41 +1,3 @@
-// import { NextResponse } from "next/server";
-// // import connectDB from "@/lib/db"; // Assume you have a function to connect to MongoDB
-// import connect from "@/lib/db";
-// import Contact from "@/lib/models/Contact";
-
-// export const POST = async (req) => {
-//   const body = await req.json();
-//   console.log("Body: ", body);
-//   console.log("request: ", req);
-//   const { firstName, lastName, phoneNumber, email, message, source, fileUrls } =
-//     body;
-
-//   const newContact = new Contact({
-//     firstName,
-//     lastName,
-//     phoneNumber,
-//     email,
-//     message,
-//     source,
-//     fileUrls, // Save uploaded file URLs in MongoDB
-//   });
-
-//   try {
-//     await connect();
-//     await newContact.save();
-//     return new NextResponse(
-//       JSON.stringify({ message: "Form data saved successfully" }),
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("Error saving contact form data", error);
-//     return new NextResponse(
-//       JSON.stringify({ message: "Error saving data", error }),
-//       { status: 500 }
-//     );
-//   }
-// };
-
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import Contact from "@/lib/models/Contact";
@@ -67,6 +29,10 @@ const uploadFilesToCloudinary = async (files) => {
           .upload_stream(
             {
               resource_type: "auto",
+              public_id: `${Date.now()}_${file.name
+                .split(".")[0]
+                .split(" ")
+                .join("_")}`,
               folder: "aeroflow/files",
             },
             (error, result) => {

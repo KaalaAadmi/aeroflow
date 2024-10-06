@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   IconArrowLeft,
   IconBrandTabler,
+  IconPlus,
   IconSettings,
   IconTag,
 } from "@tabler/icons-react";
@@ -16,6 +17,7 @@ import ProductTable from "@/components/ProductTable";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import EditProduct from "@/components/EditProduct";
+import AddProductForm from "@/components/AddProductForm";
 
 export default function Admin() {
   const [editingProduct, setEditingProduct] = useState(null);
@@ -32,15 +34,23 @@ export default function Admin() {
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "#dashboard",
       icon: (
         <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
       component: <Dashboard />,
     },
     {
+      label: "AddProduct",
+      href: "#addproduct",
+      icon: (
+        <IconPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+      component: <AddProduct />,
+    },
+    {
       label: "Products",
-      href: "#",
+      href: "#products",
       icon: (
         <IconTag className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -48,7 +58,7 @@ export default function Admin() {
     },
     {
       label: "Settings",
-      href: "#",
+      href: "#settings",
       icon: (
         <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -56,7 +66,7 @@ export default function Admin() {
     },
     {
       label: "Logout",
-      href: "#",
+      href: "#logout",
       icon: (
         <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -247,8 +257,9 @@ const AddProduct = () => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <h1 className="text-2xl font-semibold">Add Product</h1>
+        {/* <h1 className="text-2xl font-semibold">Add Product</h1> */}
         {/* Add product form */}
+        <AddProductForm />
       </div>
     </div>
   );

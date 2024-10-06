@@ -34,6 +34,7 @@
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.1",
+    "@radix-ui/react-toast": "^1.2.2",
     "@tabler/icons-react": "^3.19.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tanstack/react-table": "^8.20.5",

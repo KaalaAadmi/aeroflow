@@ -7,8 +7,8 @@ export const POST = async (req) => {
   try {
     const formData = await req.formData();
     const img = formData.get("image");
-    const id = formData.get("id");
-
+    // const id = formData.get("id");
+    const uploadImages = [];
     // Check if image exists in formData
     if (!img) {
       return new NextResponse(
@@ -30,28 +30,34 @@ export const POST = async (req) => {
 
     // Upload the image to Cloudinary and return response
     const uploadResult = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          resource_type: "image",
-          public_id: `${id}_${Date.now()}_${img.name}`,
-          folder: "/aeroflow/images",
-          upload_preset: process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME,
-        },
-        (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
+      cloudinary.uploader
+        .upload_stream(
+          {
+            resource_type: "image",
+            public_id: `${Date.now()}_${img.name
+              .split(".")[0]
+              .split(" ")
+              .join("_")}`,
+            folder: "/aeroflow/images",
+            // upload_preset: process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME,
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
           }
-        }
-      );
-      // Pipe the buffer to the Cloudinary upload stream
-      uploadStream.end(buffer);
+        )
+        .end(Buffer.from(buffer));
     });
-
+    uploadImages.push({
+      key: uploadResult.asset_id,
+      url: uploadResult.secure_url,
+    });
     // Return success response with the uploaded image data
     return new NextResponse(
-      JSON.stringify({ uploadedImageData: uploadResult, message: "Success" }),
+      JSON.stringify({ uploadedImageData: uploadImages, message: "Success" }),
       { status: 200 }
     );
   } catch (error) {

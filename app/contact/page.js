@@ -1,13 +1,9 @@
 "use client";
-// import MapComponent from "@/components/MapComponent";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/file-upload";
-// import { Input } from "@nextui-org/input";
-// import { Textarea } from "@nextui-org/input";
-// import {  } from "@nextui-org/select";
 
 import { Label } from "@/components/ui/label";
-import { Form, useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import axios from "axios";
 
 import { ChevronsUpDown, House, MailOpen, MapPin, Phone } from "lucide-react";
@@ -24,14 +20,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 const Contact = () => {
   const [files, setFiles] = useState([]);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const handleFileUpload = (files) => {
-    setFiles(files);
-    // console.log(files);
+  const [enableSubmit, setEnableSubmit] = useState(false);
+  const { toast } = useToast();
+  const handleFileUpload = (updatedFiles) => {
+    console.log("Updated Files from contact page: ", updatedFiles);
+    setFiles(updatedFiles);
   };
+
   const {
     register,
     handleSubmit,
@@ -56,7 +56,12 @@ const Contact = () => {
       for (let i = 0; i < files.length; i++) {
         formData.append("file", files[i]);
       }
-      console.log(formData);
+
+      // Iterate over FormData entries and log them
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+
       // Make the API request
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL}/api/contact`,
@@ -68,15 +73,28 @@ const Contact = () => {
 
       if (response.ok) {
         const result = await response.json();
-        alert("Contact saved successfully");
+        // alert("Contact saved successfully");
+        toast({
+          title: "Contact saved successfully",
+          description: "We will get back to you soon",
+        });
         console.log(result);
       } else {
         const error = await response.json();
-        alert(`Error: ${error.message}`);
+        console.log(error.message);
+        // alert(`Error: ${error.message}`);
+        toast({
+          title: "Error saving contact",
+          description: "Please try again later",
+        });
       }
     } catch (error) {
       console.error("Form submission error:", error);
-      alert("An error occurred while submitting the form");
+      // alert("An error occurred while submitting the form");
+      toast({
+        title: "An error occurred while submitting the form",
+        description: "Please try again later",
+      });
     }
   };
 
@@ -141,7 +159,7 @@ const Contact = () => {
               </span>
               <span className="flex items-center justify-start">
                 <MailOpen size={24} />
-                <p className="mt-2 ml-2">sales@proair.ie</p>
+                <p className="mt-2 ml-2">sales@aeroflow.ie</p>
               </span>
               <span className="flex items-center justify-start">
                 <MapPin size={24} />
@@ -168,8 +186,8 @@ const Contact = () => {
           <Form
             api={`${process.env.NEXT_PUBLIC_URL}/api/contact`}
             onSubmit={handleSubmit(onSubmit)}
-            onSuccess={() => {
-              alert("SUCCESS");
+            onSuccess={(resp) => {
+              alert("SUCCESS: ", resp);
             }} // valid response
             control={control}
             onError={(err) => {
@@ -237,6 +255,7 @@ const Contact = () => {
                 type="text"
                 className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
               />
+              {errors.email && <p role="alert">{errors.email.message}</p>}
             </div>
             <div className="mb-5 md:mb-6 lg:mb-8">
               <label htmlFor="message" className="mb-1 font-medium">
@@ -254,60 +273,66 @@ const Contact = () => {
                   },
                 })}
               />
-              {/* <textarea
-                id="message"
-                {...register("message", { required: "Message is required" })}
-                placeholder=""
-                maxLength="5000"
-                name="field"
-                className="mb-2.5 block h-auto min-h-44 w-full rounded-md border border-solid border-black px-3 py-2 text-sm text-black"
-              ></textarea> */}
             </div>
             <div className="mb-5 md:mb-6 lg:mb-8">
               <label htmlFor="option" className="mb-1 font-medium">
                 {" "}
                 Where did you hear about us?{" "}
               </label>
-              <Select
-                id="option"
-                {...register("source", { required: "Source is required" })}
-                className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Web</SelectLabel>
-                    <SelectItem value="google">Google</SelectItem>
-                    <SelectItem value="bing">Bing</SelectItem>
-                    <SelectItem value="yahoo">Yahoo</SelectItem>
-                  </SelectGroup>
-                  <SelectGroup>
-                    <SelectLabel>Social Media</SelectLabel>
-                    <SelectItem value="facebook">Facebook</SelectItem>
-                    <SelectItem value="twitter">Twitter</SelectItem>
-                    <SelectItem value="instagram">Instagram</SelectItem>
-                  </SelectGroup>
-                  <SelectGroup>
-                    <SelectLabel>Other</SelectLabel>
-                    <SelectItem value="existing-customer">
-                      Existing Customer
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="source"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...register("source")}
+                    {...field}
+                    id="option"
+                    className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
+                    onValueChange={field.onChange} // Manually update the form state when a value is selected
+                    value={field.value} // Set the current value from the form state
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Web</SelectLabel>
+                        <SelectItem value="google">Google</SelectItem>
+                        <SelectItem value="bing">Bing</SelectItem>
+                        <SelectItem value="yahoo">Yahoo</SelectItem>
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel>Social Media</SelectLabel>
+                        <SelectItem value="facebook">Facebook</SelectItem>
+                        <SelectItem value="twitter">Twitter</SelectItem>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel>Other</SelectLabel>
+                        <SelectItem value="existing-customer">
+                          Existing Customer
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
             <div className="my-6 w-full  mx-auto h-4/6 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
               <FileUpload
                 onChange={handleFileUpload}
-                // files={files}
-                // setFiles={setFiles}
+                files={files}
+                setFiles={setFiles}
               />
             </div>
             <div className="flex items-center cursor-pointer mb-1 justify-center pb-4 md:pl-5">
               {" "}
-              <Switch id="privacy" />
+              <Switch
+                onCheckedChange={() =>
+                  setEnableSubmit((prevState) => !prevState)
+                }
+                id="privacy"
+              />
               <Label htmlFor="privacy" className="ml-2">
                 By selecting this, you agree to the{" "}
                 <Button variant="link" href="/privacy-policy">
@@ -319,12 +344,17 @@ const Contact = () => {
                 </Button>
               </Label>
             </div>
-            <input
-              type="submit"
-              value="Contact Sales"
-              className="inline-block w-full rounded-md cursor-pointer bg-black px-6 py-3 text-center font-semibold text-white"
-              onClick={handleSubmit}
-            />
+            <Button
+              disabled={!enableSubmit} // Disable the button when enableSubmit is false
+              className={cn(
+                "flex w-full rounded-md px-6 py-6 text-center font-semibold text-white",
+                enableSubmit
+                  ? "cursor-pointer bg-black"
+                  : "cursor-not-allowed bg-gray-400"
+              )}
+            >
+              Contact Sales
+            </Button>
           </Form>
         </div>
       </section>
