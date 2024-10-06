@@ -22,11 +22,11 @@ export default function ProductTable({ data, onEdit }) {
         case "images":
           return (
             <AvatarGroup>
-              {data.images.map((image, index) => (
+              {data?.imageUrls?.map((image, index) => (
                 <Tooltip key={index} content={`Product Image ${index + 1}`}>
                   <Avatar
                     key={index}
-                    src={image}
+                    src={image.url}
                     alt={`Product ${data.name}`}
                     size="sm"
                   />

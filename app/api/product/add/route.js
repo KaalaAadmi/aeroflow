@@ -1,101 +1,93 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
-import multer from "multer";
-import Product from "@/lib/models/Products";
 import connect from "@/lib/db";
+import Product from "@/lib/models/Products";
 
-// Cloudinary config
+// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
 });
 
-// Multer setup for handling file uploads
-const storage = multer.memoryStorage(); // Store files in memory
-const upload = multer({ storage });
+const validFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
-// Disable Next.js body parser for file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-// Helper to upload file to Cloudinary
-const uploadFileToCloudinary = async (buffer, fileName) => {
-  return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        resource_type: "image",
-        public_id: `aeroflow/${fileName}`,
-        folder: "/aeroflow/images",
-      },
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result.secure_url);
-        }
-      }
-    );
-    uploadStream.end(buffer); // Pipe buffer to Cloudinary
-  });
-};
-
-// Helper function to handle Multer file upload and wrap in a Promise
-const runMiddleware = (req, res, fn) => {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-};
-
-export const POST = async (req, res) => {
-  try {
-    // Use the Multer middleware
-    await runMiddleware(req, res, upload.single("image"));
-
-    // Check if file exists
-    if (!req.file) {
-      return NextResponse.json(
-        { message: "No file uploaded" },
-        { status: 400 }
-      );
+// Upload images to Cloudinary
+const uploadImagesToCloudinary = async (files) => {
+  const uploadedImages = [];
+  for (const file of files) {
+    if (validFileTypes.includes(file.type)) {
+      const buffer = await file.arrayBuffer();
+      const uploadResponse = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              resource_type: "auto",
+              public_id: `${Date.now()}_${file.name
+                .split(".")[0]
+                .split(" ")
+                .join("_")}`,
+              folder: "aeroflow/products",
+            },
+            (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            }
+          )
+          .end(Buffer.from(buffer));
+      });
+      uploadedImages.push({
+        key: uploadResponse.public_id,
+        url: uploadResponse.secure_url,
+      });
+    } else {
+      throw new Error("Invalid file type");
     }
+  }
+  return uploadedImages;
+};
 
-    // Extract form fields from `req.body`
-    const { name, price, description } = req.body;
+export const POST = async (req) => {
+  try {
+    const formData = await req.formData();
+    const name = formData.get("name");
+    const description = formData.get("description");
+    const price = formData.get("price");
+    const images = formData.getAll("image"); // Get uploaded files
 
-    // Upload file to Cloudinary
-    const uploadedImageUrl = await uploadFileToCloudinary(
-      req.file.buffer, // Use buffer from multer
-      req.file.originalname
-    );
-
+    // Upload images to Cloudinary
+    const uploadedImageUrls = await uploadImagesToCloudinary(images);
     // Save product to MongoDB
-    await connect(); // Ensure your MongoDB connection
+    await connect();
+    // const product = Product.findOne({ name: name, price: price });
+    // if (product) {
+    //   console.log(product);
+    //   return new NextResponse(
+    //     JSON.stringify({ message: "Product already exists" }),
+    //     { status: 400 }
+    //   );
+    // }
+
     const newProduct = new Product({
       name,
-      price,
       description,
-      imageUrl: uploadedImageUrl, // Cloudinary URL
+      price,
+      imageUrls: uploadedImageUrls,
     });
-
     await newProduct.save();
 
     return NextResponse.json(
-      { message: "Product saved successfully", newProduct },
+      { message: "Product added successfully" },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error saving product:", error);
+    console.error("Error adding product:", error);
     return NextResponse.json(
-      { message: "Error saving product", error: error.message },
+      { message: "Error adding product", error: error.message },
       { status: 500 }
     );
   }

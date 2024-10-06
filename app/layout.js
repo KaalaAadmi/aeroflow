@@ -3,6 +3,7 @@ import "./globals.css";
 import { NextUIProvider } from "@nextui-org/system";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
           <NextUIProvider>
             <Navbar />
             {children}
+            <Toaster />
           </NextUIProvider>
         </body>
       </html>

@@ -25,30 +25,37 @@ const secondaryVariant = {
   },
 };
 
-export const FileUpload = ({ onChange }) => {
-  const [files, setFiles] = useState([]);
+export const FileUpload = ({ onChange, files, setFiles }) => {
+  // const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
 
+  // Handle file upload logic
   const handleFileChange = (newFiles) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    onChange && onChange(newFiles);
+    setFiles((prevFiles) => {
+      const updatedFilesSet = new Set([...prevFiles, ...newFiles]);
+      const updatedFilesArray = Array.from(updatedFilesSet);
+      onChange && onChange(updatedFilesArray); // Update parent component with the new file list
+      return updatedFilesArray; // Update local state with unique files
+    });
   };
 
+  // Handle click to trigger file input
   const handleClick = () => {
     fileInputRef.current?.click();
   };
 
-  const { getRootProps, isDragActive } = useDropzone({
+  // Dropzone setup
+  const { getRootProps, isDragActive, inputRef } = useDropzone({
     multiple: true,
-    noClick: true,
+    noClick: true, // Prevent auto-opening of file dialog on click (we'll control it manually)
     onDrop: handleFileChange,
     onDropRejected: (error) => {
-      console.log(error);
+      console.error("File drop rejected", error);
     },
   });
 
   return (
-    <div className="w-full h-4/6" {...getRootProps()}>
+    <div className="w-full" {...getRootProps()}>
       <motion.div
         onClick={handleClick}
         whileHover="animate"
@@ -60,6 +67,7 @@ export const FileUpload = ({ onChange }) => {
           type="file"
           onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
           className="hidden"
+          multiple
         />
         <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
           <GridPattern />

@@ -1,12 +1,6 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { FileUpload } from "./ui/file-upload";
-// import {
-//   Modal,
-//   ModalBody,
-//   ModalContent,
-//   ModalFooter,
-//   ModalTrigger,
-// } from "./ui/animated-modal";
 import {
   Modal,
   ModalContent,
@@ -15,16 +9,20 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/modal";
-import { motion } from "framer-motion";
-import Image from "next/image";
+
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
-const EditProduct = ({ product, onSave, onCancel, setActive }) => {
+const EditProduct = ({ product }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [name, setName] = useState(product.name);
-  const [images, setImages] = useState(product.images);
+
+  const [images, setImages] = useState(product.imageUrls);
   const [files, setFiles] = useState([]);
+  const { toast } = useToast();
+  const router = useRouter();
   const handleOpenModal = (e) => {
     e.preventDefault();
     onOpen();
@@ -33,9 +31,142 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
     setFiles(files);
     // console.log(files);
   };
-  const handleSave = () => {
-    const updatedProduct = { ...product, name, images };
-    onSave(updatedProduct);
+  // console.log(images);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+    setValue,
+  } = useForm();
+
+  useEffect(() => {
+    if (product) {
+      setValue("name", product.name);
+      setValue("description", product.description);
+      setValue("price", product.price);
+      setValue("imageUrls", product.imageUrls);
+    }
+  }, [product, setValue]);
+
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    // Append product fields to formData
+    formData.append("productId", product._id); // Ensure the product ID is passed
+
+    const updates = [];
+    // Check if each field has been changed and append to formData and updates array
+    if (data.name !== product.name) {
+      formData.append("name", data.name);
+      updates.push(`Name: ${data.name}`);
+    }
+
+    if (data.description !== product.description) {
+      formData.append("description", data.description);
+      updates.push(`Description: ${data.description}`);
+    }
+
+    if (data.price !== product.price) {
+      formData.append("price", data.price);
+      updates.push(`Price: $${data.price}`);
+    }
+
+    // Append new image files if any
+    if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append("image", file);
+        updates.push(`Image(s) uploaded`); // Indicate new images uploaded
+      });
+    }
+    // formData.append("name", data.name);
+    // formData.append("description", data.description);
+    // formData.append("price", data.price);
+
+    // // Append new image files if any
+    // if (files && files.length > 0) {
+    //   files.forEach((file) => {
+    //     formData.append("image", file);
+    //   });
+    // }
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+
+    try {
+      // Send PUT request to update product
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/product/update`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Product updated successfully:", result);
+        // Update the images state with the new URLs
+        if (result.product && result.product.imageUrls) {
+          setImages(result.product.imageUrls);
+        }
+        // Create a detailed description for the toast message
+        const updateDescription =
+          updates.length > 0 ? updates.join(", ") : "No changes made.";
+        toast({
+          title: "Product updated successfully",
+          description: updateDescription,
+        });
+      } else {
+        console.error("Error updating product:", result.message);
+        toast({
+          title: "Error updating product",
+          description: result.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleDeleteImage = async (imageAssetId, productId) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/product/remove-image`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imageAssetId, productId }),
+        }
+      );
+
+      const dataResponse = await response.json();
+      if (response.ok) {
+        console.log(dataResponse); // Success message
+
+        // Instead of setting images from the response, filter out the deleted image from the current images
+        const updatedImages = images.filter(
+          (image) => image.key !== imageAssetId
+        );
+        setImages(updatedImages); // Update the state without re-adding
+
+        // Optionally reset files after successful submission
+        setFiles([]);
+        toast({
+          title: "Image deleted successfully",
+          description: "Image deleted successfully",
+        });
+      } else {
+        console.error(dataResponse.message); // Error message
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -51,14 +182,11 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
           Lorem ipsum dolor sit amet consectetur adipiscing elit ut
           aliquam,purus sit amet luctus magna fringilla urna{" "}
         </p>{" "}
-        {/* <div className="flex justify-end">
-          <Button onClick={() => setActive(<ProductList />)}></Button>
-        </div> */}
         {/* Form */}{" "}
         <form
-          //   onSubmit={handleSubmit(onSubmit)}
-          name="wf-form-name"
-          method="get"
+          onSubmit={handleSubmit(onSubmit)}
+          // name="wf-form-name"
+          method="post"
           className="mx-auto mb-4 text-left sm:px-4 md:px-20"
         >
           <div className="mb-4">
@@ -68,9 +196,9 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
             </label>
             <input
               id="name"
-              value={product.name}
+              // value={product.name}
               placeholder="Product Name"
-              //   {...register("phoneNumber")}
+              {...register("name", { required: "Product name is required" })}
               type="text"
               className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
             />
@@ -81,16 +209,16 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
               Description{" "}
             </label>
             <textarea
-              value={product.description}
+              // value={product.description}
               id="desc"
               placeholder="Description"
               maxLength={3000}
               className="mb-2.5 block h-auto min-h-44 w-full rounded-md border border-solid border-black px-3 py-2 text-sm text-black"
-              //   {...register("message", {
-              //     validate: {
-              //       pattern: (value) => !/[!]/.test(value),
-              //     },
-              //   })}
+              {...register("description", {
+                validate: {
+                  pattern: (value) => !/[!]/.test(value),
+                },
+              })}
             />
           </div>
           <div>
@@ -100,38 +228,50 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
             </label>
             <input
               id="price"
-              value={product.price}
+              // value={product.price}
               placeholder="Price"
-              // {...register("firstName", {
-              //   required: "First name is required",
-              // })}
+              {...register("price", {
+                required: "Price is required",
+                valueAsNumber: true,
+              })}
               type="number"
+              step="0.01"
               className=" block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
               required=""
             />
           </div>
           <div className="my-6 w-full mx-auto h-4/6 bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
             <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-2">
-              {images.map((image, idx) => (
-                <div key={idx} className="relative h-40 sm:h-60 lg:h-80 group">
-                  <img
-                    src={image}
-                    alt=""
-                    className="object-cover w-full h-full rounded-lg"
-                  />
-                  {/* Overlay when hovered */}
-                  <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg group-hover:opacity-30 transition-opacity"></div>
-                  {/* "Change" text visible on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white font-semibold text-lg">
-                      {/* TODO: add onClick to make api call to delete images from cloudinary and from mongodb */}
-                      <Button variant="link" className="w-full" as Child>
-                        <Trash className="h-8 w-8 text-white" />
-                      </Button>
-                    </p>
+              {images &&
+                images.length > 0 &&
+                images.map((image, idx) => (
+                  <div
+                    key={idx}
+                    className="relative h-40 sm:h-60 lg:h-80 group"
+                  >
+                    <img
+                      src={image.url}
+                      alt=""
+                      className="object-cover w-full h-full rounded-lg"
+                    />
+                    {/* Overlay when hovered */}
+                    <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg group-hover:opacity-40 transition-opacity"></div>
+                    {/* "Change" text visible on hover */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <p className="text-white font-semibold text-lg">
+                        <Button
+                          variant="link"
+                          className="w-full"
+                          onClick={() =>
+                            handleDeleteImage(image.key, product._id)
+                          } // Add onClick event here
+                        >
+                          <Trash className="h-8 w-8 text-white" />
+                        </Button>
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
             <div className="flex w-full items-center justify-center pt-6">
               <Button
@@ -155,15 +295,19 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
                     </ModalHeader>
                     <ModalBody>
                       <div className="relative w-full mt-10 max-w-xl mx-auto">
-                        <FileUpload onFileSelect={handleFileUpload} />
+                        <FileUpload
+                          onChange={handleFileUpload}
+                          files={files}
+                          setFiles={setFiles}
+                        />
                       </div>
                     </ModalBody>
                     <ModalFooter>
-                      <Button color="danger" variant="light" onClick={onClose}>
+                      <Button variant="destructive" onClick={onClose}>
                         Close
                       </Button>
                       {/* TODO: add onclick and make api call to upload image and get secure_url(s) to add in mongodb */}
-                      <Button color="primary">Upload</Button>
+                      {/* <Button color="primary">Upload</Button> */}
                     </ModalFooter>
                   </>
                 )}
@@ -176,14 +320,14 @@ const EditProduct = ({ product, onSave, onCancel, setActive }) => {
             <Button
               variant="destructive"
               className="flex w-full rounded-md cursor-pointer px-6 py-6 text-center font-semibold text-white"
-              onClick={onCancel}
+              // onClick={onCancel}
             >
               Cancel
             </Button>
             <Button
               // variant="outline"
               className=" w-full rounded-md flex items-center cursor-pointer bg-black px-6 py-6 text-center font-semibold text-white"
-              onClick={handleSave}
+              // onClick={handleSave}
             >
               Save Changes
             </Button>
