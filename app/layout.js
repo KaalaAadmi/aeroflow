@@ -25,6 +25,18 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          {/* <!-- Google tag (gtag.js) --> */}
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-NE7MGTNR4V"
+          ></script>
+          <script>
+            window.dataLayer = window.dataLayer || []; function gtag()
+            {dataLayer.push(arguments)}
+            gtag('js', new Date()); gtag('config', 'G-NE7MGTNR4V');
+          </script>
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
