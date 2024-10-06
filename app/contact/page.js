@@ -7,7 +7,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 // import {  } from "@nextui-org/select";
 
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import axios from "axios";
 
 import { ChevronsUpDown, House, MailOpen, MapPin, Phone } from "lucide-react";
@@ -37,6 +37,7 @@ const Contact = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -164,10 +165,19 @@ const Contact = () => {
             aliquam,purus sit amet luctus magna fringilla urna{" "}
           </p>{" "}
           {/* Form */}{" "}
-          <form
+          <Form
+            api={`${process.env.NEXT_PUBLIC_URL}/api/contact`}
             onSubmit={handleSubmit(onSubmit)}
-            name="wf-form-name"
-            method="get"
+            onSuccess={() => {
+              alert("SUCCESS");
+            }} // valid response
+            control={control}
+            onError={(err) => {
+              alert("ERROR: ", err);
+            }} // error response
+            validateStatus={(status) => status >= 200}
+            // name="wf-form-name"
+            method="post"
             className="mx-auto mb-4 text-left sm:px-4 md:px-20"
           >
             <div className="mb-4 grid w-full grid-cols-2 gap-6">
@@ -315,7 +325,7 @@ const Contact = () => {
               className="inline-block w-full rounded-md cursor-pointer bg-black px-6 py-3 text-center font-semibold text-white"
               onClick={handleSubmit}
             />
-          </form>
+          </Form>
         </div>
       </section>
     </>

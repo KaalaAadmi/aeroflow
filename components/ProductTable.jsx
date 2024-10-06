@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -10,48 +10,54 @@ import {
 } from "@nextui-org/table";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Avatar, AvatarGroup } from "@nextui-org/avatar";
-import { columns, users } from "@/data";
+import { columns } from "@/data";
 
-export default function ProductTable() {
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-    switch (columnKey) {
-      case "name":
-        return <>{cellValue}</>;
-      case "images":
-        return (
-          <AvatarGroup>
-            {user.images.map((image, index) => (
-              <Tooltip key={index} content={`Product Image ${index + 1}`}>
-                <Avatar
-                  key={index}
-                  src={image}
-                  alt={`User ${user.name}`}
-                  size="sm"
-                />
+export default function ProductTable({ data, onEdit }) {
+  const renderCell = React.useCallback(
+    (data, columnKey) => {
+      const cellValue = data[columnKey];
+      switch (columnKey) {
+        case "name":
+          return <>{cellValue}</>;
+        case "images":
+          return (
+            <AvatarGroup>
+              {data.images.map((image, index) => (
+                <Tooltip key={index} content={`Product Image ${index + 1}`}>
+                  <Avatar
+                    key={index}
+                    src={image}
+                    alt={`Product ${data.name}`}
+                    size="sm"
+                  />
+                </Tooltip>
+              ))}
+            </AvatarGroup>
+          );
+        case "actions":
+          return (
+            <div className="relative flex items-center gap-2">
+              <Tooltip content="Edit product">
+                <span
+                  className="text-lg text-success cursor-pointer active:opacity-50"
+                  onClick={() => onEdit(data)}
+                >
+                  <EditIcon />
+                </span>
               </Tooltip>
-            ))}
-          </AvatarGroup>
-        );
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-2">
-            <Tooltip content="Edit product">
-              <span className="text-lg text-success  cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete product">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+              <Tooltip color="danger" content="Delete product">
+                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                  <DeleteIcon />
+                </span>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    [onEdit]
+  );
 
   return (
     <Table aria-label="Example table with custom cells">
@@ -62,14 +68,14 @@ export default function ProductTable() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={users}>
-        {(item) => (
-          <TableRow key={item.id}>
+      <TableBody items={data}>
+        {data.map((item) => (
+          <TableRow key={item._id}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
           </TableRow>
-        )}
+        ))}
       </TableBody>
     </Table>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IconArrowLeft,
   IconBrandTabler,
@@ -14,8 +14,21 @@ import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 
 import ProductTable from "@/components/ProductTable";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import EditProduct from "@/components/EditProduct";
 
 export default function Admin() {
+  const [editingProduct, setEditingProduct] = useState(null);
+  const handleEditProduct = (product) => {
+    setEditingProduct(product);
+    setActiveComponent(
+      <EditProduct product={product} onSave={handleSaveChanges} />
+    );
+  };
+
+  const handleSaveChanges = async () => {
+    setActiveComponent(<ProductList onEdit={handleEditProduct} />);
+  };
   const links = [
     {
       label: "Dashboard",
@@ -50,59 +63,67 @@ export default function Admin() {
       component: <Logout />,
     },
   ];
+
   const [active, setActive] = useState(<Dashboard />);
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="w-screen h-full">
+    <div className="w-screen h-screen">
       <div className="flex items-center justify-center">
         <div
           className={cn(
-            "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1  mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
-            // for your use case, use `h-screen` instead of `h-[60vh]`
-            "h-[100vh]"
+            "rounded-md flex h-screen bg-gray-100 dark:bg-neutral-800 w-full mx-auto border border-neutral-200 dark:border-neutral-700"
           )}
         >
-          <Sidebar open={open} setOpen={setOpen} animate={false}>
-            <SidebarBody className="justify-between gap-10">
-              <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-                <>
-                  <Logo />
-                </>
-                <div className="mt-8 flex flex-col gap-2">
-                  {links.map((link, idx) => (
-                    <SidebarLink
-                      onClick={() => setActive(link.component)}
-                      key={idx}
-                      link={link}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div>
-                <SidebarLink
-                  link={{
-                    label: "Manu Arora",
-                    href: "#",
-                    icon: (
-                      <Image
-                        src="/assets/images/avatar.png"
-                        className="h-7 w-7 flex-shrink-0 rounded-full"
-                        width={50}
-                        height={50}
-                        alt="Avatar"
+          {/* Sidebar - fixed width and positioned */}
+          <div className="w-64 flex-shrink-0 bg-white dark:bg-neutral-900 h-screen overflow-y-auto border-r border-neutral-200 dark:border-neutral-700">
+            <Sidebar open={open} setOpen={setOpen} animate={false}>
+              <SidebarBody className="justify-between gap-10">
+                <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                  <>
+                    <Logo />
+                  </>
+                  <div className="mt-8 flex flex-col gap-2">
+                    {links.map((link, idx) => (
+                      <SidebarLink
+                        onClick={() => setActive(link.component)}
+                        key={idx}
+                        link={link}
                       />
-                    ),
-                  }}
-                />
-              </div>
-            </SidebarBody>
-          </Sidebar>
-          {active}
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <SidebarLink
+                    link={{
+                      label: "Manu Arora",
+                      href: "#",
+                      icon: (
+                        <Image
+                          src="/assets/images/avatar.png"
+                          className="h-7 w-7 flex-shrink-0 rounded-full"
+                          width={50}
+                          height={50}
+                          alt="Avatar"
+                        />
+                      ),
+                    }}
+                  />
+                </div>
+              </SidebarBody>
+            </Sidebar>
+          </div>
+
+          {/* Right content - scrollable */}
+          <div className="flex-1 overflow-y-auto">
+            {active} {/* This will display the selected component */}
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
 export const Logo = () => {
   return (
     <Link
@@ -117,16 +138,6 @@ export const Logo = () => {
       >
         Aero Flow
       </motion.span>
-    </Link>
-  );
-};
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
     </Link>
   );
 };
@@ -157,50 +168,96 @@ const Dashboard = () => {
   );
 };
 
-const ProductList = () => {
+const ProductList = ({ setActiveComponent }) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingProduct, setEditingProduct] = useState(null); // Track the product being edited
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/api/product/all`
+        );
+        setProducts(res.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleEdit = (product) => {
+    setEditingProduct(product); // Set the product to be edited
+  };
+
+  const handleSaveChanges = async (updatedProduct) => {
+    try {
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_URL}/api/product/${updatedProduct._id}`,
+        updatedProduct
+      );
+      setEditingProduct(null); // Exit edit mode after saving
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_URL}/api/product/all`
+      );
+      setProducts(res.data); // Fetch updated data
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="flex">
-          <div className="flex-1">
-            <h1 className="text-2xl font-semibold">Product List</h1>
-          </div>
-          <div className="flex gap-2">
-            <Button>
-              <div onClick={() => setActive(<AddProduct />)}>Add Product</div>
-            </Button>
-          </div>
-        </div>
-        {/* Product List */}
-        <div className="container mx-auto py-10">
-          <ProductTable />
-        </div>
+        {editingProduct ? (
+          <EditProduct
+            setActive={setActiveComponent}
+            product={editingProduct}
+            onSave={handleSaveChanges}
+            onCancel={() => setEditingProduct(null)}
+          />
+        ) : (
+          <>
+            <div className="flex">
+              <div className="flex-1">
+                <h1 className="text-2xl font-semibold">Product List</h1>
+              </div>
+            </div>
+            <div className="container mx-auto py-10">
+              <ProductTable data={products} onEdit={handleEdit} />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
+// Dummy AddProduct component
 const AddProduct = () => {
-  <div className="flex flex-1">
-    <div className="p-2 md:p-10 rounded-tl-2xl border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-      <div className="flex">
-        <div className="flex-1">
-          <h1 className="text-2xl font-semibold">Add Product</h1>
-        </div>
-        <div className="flex gap-2">
-          <Button asChild>
-            <Link href="/admin">Back</Link>
-          </Button>
-        </div>
+  return (
+    <div className="flex flex-1">
+      <div className="p-2 md:p-10 rounded-tl-2xl border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+        <h1 className="text-2xl font-semibold">Add Product</h1>
+        {/* Add product form */}
       </div>
     </div>
-  </div>;
+  );
 };
 
 const Settings = () => {
-  return <>Settings</>;
+  return <div>Settings</div>;
 };
 
 const Logout = () => {
-  return <>Logout</>;
+  return <div>Logout</div>;
 };
