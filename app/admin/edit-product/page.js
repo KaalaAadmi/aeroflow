@@ -3,7 +3,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 
 import React, { useState } from "react";
 
-const AddProduct = () => {
+const EditProductPage = () => {
   const [files, setFiles] = useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const handleFileUpload = (files) => {
@@ -166,7 +166,7 @@ const AddProduct = () => {
           </div>
           <input
             type="submit"
-            value="Add Product"
+            value="Edit Product"
             className="inline-block w-full rounded-md cursor-pointer bg-black px-6 py-3 text-center font-semibold text-white"
             // onClick={handleSubmit}
           />
@@ -176,4 +176,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProductPage;

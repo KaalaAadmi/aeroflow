@@ -38,6 +38,8 @@
   - [ ] upload images to cloudinary and add link to mongodb
 - [x] /update-product
 - [x] /get-all-product
+- [x] api for modifying product
+- [ ] api for deleting the images from cloudinary and mongodb
 
 ## AFTER API BUILDING:
 
