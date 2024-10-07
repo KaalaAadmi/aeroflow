@@ -4,7 +4,7 @@ import { NextUIProvider } from "@nextui-org/system";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,6 +36,7 @@ export default function RootLayout({ children }) {
           </NextUIProvider>
         </body>
         <GoogleAnalytics gaId="G-NE7MGTNR4V" />
+        <GoogleTagManager gtmId="GTM-MJDW758P" />
       </html>
     </ClerkProvider>
   );
