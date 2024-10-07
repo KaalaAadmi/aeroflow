@@ -34,9 +34,9 @@ export default function RootLayout({ children }) {
             {children}
             <Toaster />
           </NextUIProvider>
+          <GoogleTagManager gtmId="GTM-MJDW758P" />
         </body>
         <GoogleAnalytics gaId="G-NE7MGTNR4V" />
-        <GoogleTagManager gtmId="GTM-MJDW758P" />
       </html>
     </ClerkProvider>
   );
