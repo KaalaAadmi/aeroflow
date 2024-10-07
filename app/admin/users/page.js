@@ -4,7 +4,7 @@ import { checkRole } from "@/lib/roles";
 import { clerkClient } from "@clerk/nextjs/server";
 import { SearchUsers } from "@/components/SearchUsers";
 import { removeRole, setRole } from "../_actions";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 // import { removeRole, setRole } from "@/app/admin/_actions";
 
 export default async function Users(params) {
