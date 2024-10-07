@@ -24,7 +24,7 @@ export default function Home() {
             </h1>
             <p className="mx-auto mb-5 max-w-lg text-sm text-gray-500 sm:text-xl md:mb-6 lg:mb-8">
               {" "}
-              Discover advanced vantilation systems{" "}
+              Discover advanced ventilation systems{" "}
             </p>{" "}
             {/* Hero Button */}{" "}
             <div className="flex items-stretch justify-center">

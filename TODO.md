@@ -62,6 +62,10 @@
 
 - [x] After signing in, the navbar should show logout and not login
 - [x] After signing in, if the user is an admin then a button for admin pannel should be visible
+- [x] Make logo
+- [ ] Add error on forms(form validation)
+  - [ ] contact form
+  - [ ] add product form
 
 ## BONUS:
 
