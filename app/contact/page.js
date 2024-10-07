@@ -206,7 +206,8 @@ const Contact = () => {
             validateStatus={(status) => status >= 200}
             // name="wf-form-name"
             method="post"
-            className="mx-auto mb-4 text-left sm:px-4 md:px-20"
+            className="af-contact-form mx-auto mb-4 text-left sm:px-4 md:px-20"
+            id="af-contact-form"
           >
             <div className="mb-4 grid w-full grid-cols-2 gap-6">
               <div>
@@ -356,8 +357,9 @@ const Contact = () => {
             </div>
             <Button
               disabled={!enableSubmit} // Disable the button when enableSubmit is false
+              id="af-contact-form-button"
               className={cn(
-                "flex w-full rounded-md px-6 py-6 text-center font-semibold text-white",
+                "flex w-full rounded-md px-6 py-6 text-center font-semibold text-white af-contact-form-button",
                 enableSubmit
                   ? "cursor-pointer bg-black"
                   : "cursor-not-allowed bg-gray-400"
