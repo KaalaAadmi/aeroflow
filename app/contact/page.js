@@ -23,11 +23,14 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { sendGAEvent } from "@next/third-parties/google";
+import { useUser } from "@clerk/nextjs";
 
 const Contact = () => {
   const [files, setFiles] = useState([]);
   const [enableSubmit, setEnableSubmit] = useState(false);
   const { toast } = useToast();
+  const { user } = useUser();
+
   const handleFileUpload = (updatedFiles) => {
     console.log("Updated Files from contact page: ", updatedFiles);
     setFiles(updatedFiles);
@@ -51,6 +54,7 @@ const Contact = () => {
       const formData = new FormData();
 
       // Append form fields to FormData
+      formData.append("userId", user.id);
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
       formData.append("phoneNumber", data.phoneNumber);

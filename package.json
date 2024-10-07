@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.6.4",
+    "@google-analytics/data": "^4.8.0",
     "@headlessui/react": "^2.1.9",
     "@heroicons/react": "^2.1.5",
     "@next/third-parties": "^14.2.14",
@@ -45,6 +46,7 @@
     "clsx": "^2.1.1",
     "formidable": "^3.5.1",
     "framer-motion": "^11.9.0",
+    "install": "^0.13.0",
     "lucide-react": "^0.447.0",
     "mapbox-gl": "^3.7.0",
     "mongodb": "^6.9.0",

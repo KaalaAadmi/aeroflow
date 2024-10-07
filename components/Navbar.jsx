@@ -1,15 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react"; // Icons
 import Link from "next/link";
+// import { currentUser } from "@clerk/nextjs/server";
+import { useClerk } from "@clerk/nextjs";
+import { useUser } from "@clerk/clerk-react";
 
 const Navbar = () => {
+  // const [cussrentUser, setCurrentUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { signOut } = useClerk();
+  const { isSignedIn, user, isLoaded } = useUser();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  // Check if user has admin role, assuming role is stored in public metadata
+  const isAdmin = isLoaded && user?.publicMetadata?.role === "admin";
 
   return (
     <nav className="bg-white shadow-md z-10">
@@ -37,9 +46,22 @@ const Navbar = () => {
             <a href="/contact" className="text-gray-700 hover:text-blue-600">
               Contact
             </a>
-            <Button asChild>
-              <Link href="/signin">Login</Link>
-            </Button>
+            {isSignedIn ? (
+              <>
+                {isAdmin && (
+                  <Button asChild>
+                    <Link href="/admin">Admin</Link>
+                  </Button>
+                )}
+                <Button onClick={() => signOut({ redirectUrl: "/" })}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button asChild>
+                <Link href="/signin">Login</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Hamburger Menu */}

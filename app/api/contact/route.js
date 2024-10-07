@@ -58,6 +58,7 @@ export const POST = async (req) => {
     const formData = await req.formData();
 
     // Extract form fields
+    const userId = formData.get("userId");
     const firstName = formData.get("firstName");
     const lastName = formData.get("lastName");
     const phoneNumber = formData.get("phoneNumber");
@@ -72,6 +73,7 @@ export const POST = async (req) => {
     // Save contact data to MongoDB
     await connect();
     const newContact = new Contact({
+      userId,
       firstName,
       lastName,
       phoneNumber,
