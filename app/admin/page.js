@@ -6,6 +6,7 @@ import {
   IconPlus,
   IconSettings,
   IconTag,
+  IconUser,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -18,6 +19,8 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import EditProduct from "@/components/EditProduct";
 import AddProductForm from "@/components/AddProductForm";
+// import Users from "@/components/Users";
+import { useRouter } from "next/navigation";
 
 export default function Admin() {
   const [editingProduct, setEditingProduct] = useState(null);
@@ -57,12 +60,12 @@ export default function Admin() {
       component: <ProductList />,
     },
     {
-      label: "Settings",
-      href: "#settings",
+      label: "Users",
+      href: "#users",
       icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconUser className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
-      component: <Settings />,
+      component: <AllUsers />,
     },
     {
       label: "Logout",
@@ -260,6 +263,18 @@ const AddProduct = () => {
         {/* <h1 className="text-2xl font-semibold">Add Product</h1> */}
         {/* Add product form */}
         <AddProductForm />
+      </div>
+    </div>
+  );
+};
+
+const AllUsers = () => {
+  const router = useRouter();
+  router.push("/admin/users");
+  return (
+    <div className="flex flex-1">
+      <div className="p-2 md:p-10 rounded-tl-2xl border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+        {/* <Users /> */}
       </div>
     </div>
   );

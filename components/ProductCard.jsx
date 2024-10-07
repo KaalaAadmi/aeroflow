@@ -2,28 +2,33 @@
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 
-const ProductCard = ({ id, name, img, price, where }) => {
+const ProductCard = ({ id, name, imgs, price, where }) => {
+  const image_url = imgs ? imgs[0].url : "https://via.placeholder.com/500";
   return (
     <Card
       shadow="sm"
       isPressable
       onPress={() => (window.location.href = `/product/${id}`)}
-      className={where === "products" ? "h-full" : ""}
+      className={
+        where === "products"
+          ? "rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all"
+          : ""
+      }
     >
-      <CardBody className="overflow-visible p-0 flex flex-col justify-center">
+      <CardBody className="overflow-visible p-0 flex flex-col justify-center items-center">
         <Image
           shadow="sm"
           radius="lg"
           width="500"
           height="500"
           alt={name}
-          className="w-full object-cover" // h-[300px]"
-          src={img}
+          className="h-[400px] w-full rounded-md object-cover object-top"
+          src={image_url}
         />
       </CardBody>
-      <CardFooter className="text-small justify-between">
+      <CardFooter className="text-medium font-bold justify-between">
         <b>{name}</b>
-        <p className="text-default-500">{price}</p>
+        <p className="text-default-500">€ {price}</p>
       </CardFooter>
     </Card>
   );
