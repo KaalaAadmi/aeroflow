@@ -22,6 +22,7 @@ import AddProductForm from "@/components/AddProductForm";
 // import Users from "@/components/Users";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { Loader2Icon } from "lucide-react";
 
 export default function Admin() {
   const { user } = useUser();
@@ -38,13 +39,21 @@ export default function Admin() {
     setActiveComponent(<ProductList onEdit={handleEditProduct} />);
   };
   const links = [
+    // {
+    //   label: "Dashboard",
+    //   href: "#dashboard",
+    //   icon: (
+    //     <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    //   ),
+    //   component: <Dashboard />,
+    // },
     {
-      label: "Dashboard",
-      href: "#dashboard",
+      label: "Products",
+      href: "#products",
       icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconTag className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
-      component: <Dashboard />,
+      component: <ProductList />,
     },
     {
       label: "AddProduct",
@@ -53,14 +62,6 @@ export default function Admin() {
         <IconPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
       component: <AddProduct />,
-    },
-    {
-      label: "Products",
-      href: "#products",
-      icon: (
-        <IconTag className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-      component: <ProductList />,
     },
     {
       label: "Users",
@@ -80,7 +81,7 @@ export default function Admin() {
     },
   ];
 
-  const [active, setActive] = useState(<Dashboard />);
+  const [active, setActive] = useState(<ProductList />);
   const [open, setOpen] = useState(false);
 
   return (
@@ -228,7 +229,13 @@ const ProductList = ({ setActiveComponent }) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full h-screen">
+        <div className="h-screen flex items-center justify-center">
+          <Loader2Icon className="w-10 h-10 animate-spin" />
+        </div>
+      </div>
+    );
   }
 
   return (

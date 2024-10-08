@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { ChevronsUpDown, House, MailOpen, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 
 import {
@@ -24,13 +24,16 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useUser } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
 
 const Contact = () => {
   const [files, setFiles] = useState([]);
   const [enableSubmit, setEnableSubmit] = useState(false);
   const { toast } = useToast();
   const { user } = useUser();
-
+  const searchParams = useSearchParams();
+  const product = searchParams.get("product");
+  console.log(product);
   const handleFileUpload = (updatedFiles) => {
     console.log("Updated Files from contact page: ", updatedFiles);
     setFiles(updatedFiles);
@@ -44,6 +47,9 @@ const Contact = () => {
     control,
   } = useForm({
     mode: "onTouched",
+    defaultValues: {
+      message: product !== null ? `I am interested in ${product}` : "",
+    },
   });
 
   const onSubmit = async (data) => {
