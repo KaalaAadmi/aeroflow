@@ -1,3 +1,60 @@
+export const category = [
+  {
+    label: "Cat",
+    value: "cat",
+    description: "The second most popular pet in the world",
+  },
+  {
+    label: "Dog",
+    value: "dog",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Fish",
+    value: "fish",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Bird",
+    value: "bird",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Reptile",
+    value: "reptile",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Small Animal",
+    value: "small-animal",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Horse",
+    value: "horse",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Farm Animal",
+    value: "farm-animal",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Exotic Animal",
+    value: "exotic-animal",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Insect",
+    value: "insect",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Other",
+    value: "other",
+    description: "The most popular pet in the world",
+  },
+];
 export const products = [
   {
     id: 1,

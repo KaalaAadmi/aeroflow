@@ -2,8 +2,7 @@
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 
-const ProductCard = ({ id, name, imgs, price, where }) => {
-  const image_url = imgs ? imgs[0].url : "https://via.placeholder.com/500";
+const ProductCard = ({ id, name, img, price, where }) => {
   return (
     <Card
       shadow="sm"
@@ -23,7 +22,7 @@ const ProductCard = ({ id, name, imgs, price, where }) => {
           height="500"
           alt={name}
           className="h-[400px] w-full rounded-md object-cover object-top"
-          src={image_url}
+          src={img}
         />
       </CardBody>
       <CardFooter className="text-medium font-bold justify-between">

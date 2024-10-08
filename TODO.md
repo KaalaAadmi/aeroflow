@@ -21,7 +21,7 @@
 - [x] terms-and-conditions
 - [x] login
 - [x] register
-- [ ] profile
+- [x] profile - already in clerk userbutton
 - [x] contact
 
 ## COMPONENTS:
@@ -42,8 +42,10 @@
 - [x] /get-all-product
 - [x] api for modifying product
 - [x] api for deleting the images from cloudinary and mongodb
-- [ ] add category field to the product schema
-- [ ] api route for similar products
+- [x] add category field to the product schema
+- [x] api route for similar products
+- [x] add featured field to the products schema
+- [x] api route for featured products
 
 ## AFTER API BUILDING:
 
@@ -63,14 +65,15 @@
 - [x] After signing in, the navbar should show logout and not login
 - [x] After signing in, if the user is an admin then a button for admin pannel should be visible
 - [x] Make logo
-- [ ] Add error on forms(form validation)
-  - [ ] contact form
-  - [ ] add product form
+- [x] Add error on forms(form validation)
+  - [x] contact form
+  - [x] add product form
 
 ## BONUS:
 
 - [ ] Custom signup page
 - [ ] Custom signin page
-- [ ] Featured products
-  - [ ] add featured field in product schema and modify the api route
-  - [ ] display featured products in homescreen
+- [ ] Custom profile page
+- [x] Featured products
+  - [x] add featured field in product schema and modify the api route
+  - [x] display featured products in homescreen
