@@ -45,7 +45,7 @@ const Product = () => {
               {/* Thumbnail Images */}
               <div className="flex gap-2 w-full justify-center">
                 {Array.from({ length: 3 }, (_, i) => (
-                  <Skeleton className="w-16 h-16 rounded-md">
+                  <Skeleton key={i} className="w-16 h-16 rounded-md">
                     <div className="h-16 w-16 rounded-md bg-secondary"></div>
                   </Skeleton>
                 ))}
