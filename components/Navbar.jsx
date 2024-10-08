@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react"; // Icons
+import { Menu, Shield, X } from "lucide-react"; // Icons
 import Link from "next/link";
 // import { currentUser } from "@clerk/nextjs/server";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 
 const Navbar = () => {
@@ -28,9 +28,9 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center">
             <a href="/" className="text-xl font-bold text-blue-600">
               <img
-                src="/assets/images/logo-black.svg"
+                src="/assets/images/AeroFlow..png"
                 alt="Logo"
-                className="w-48 h-8"
+                className="w-46 h-8"
               />
             </a>
           </div>
@@ -48,14 +48,19 @@ const Navbar = () => {
             </a>
             {isSignedIn ? (
               <>
-                {isAdmin && (
-                  <Button asChild>
-                    <Link href="/admin">Admin</Link>
-                  </Button>
-                )}
-                <Button onClick={() => signOut({ redirectUrl: "/" })}>
-                  Logout
-                </Button>
+                <UserButton user={user} signOut={signOut}>
+                  <UserButton.MenuItems>
+                    {isAdmin && (
+                      <UserButton.Action
+                        label="Admin Pannel"
+                        labelIcon={<Shield className="h-4 w-4" />}
+                        onClick={() => {
+                          window.location.href = "/admin";
+                        }}
+                      />
+                    )}
+                  </UserButton.MenuItems>
+                </UserButton>
               </>
             ) : (
               <Button asChild>

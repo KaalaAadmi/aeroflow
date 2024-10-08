@@ -27,7 +27,7 @@ const Products = () => {
                 key={product._id}
                 id={product._id}
                 name={product.name}
-                imgs={product.imageUrls}
+                img={product.imageUrls[0].url}
                 price={product.price}
                 // description={product.description}
                 where="products"

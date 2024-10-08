@@ -1,10 +1,6 @@
+import FeaturedProducts from "@/components/FeaturedProducts";
 import Footer from "@/components/Footer";
-import ProductCard from "@/components/ProductCard";
 import Testimonials from "@/components/Testimonials";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import { products, testimonials } from "@/data";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -111,28 +107,7 @@ export default function Home() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="my-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Featured Products
-        </h2>
-        <div className="grid grid-cols-1  gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product, idx) => (
-            <ProductCard
-              key={idx}
-              id={product.id}
-              name={product.name}
-              img={product.image}
-              price={product.price}
-              // description={product.description}
-            />
-          ))}
-        </div>
-        <div className="flex justify-center items-center">
-          <Button className="mt-6  text-white px-8 py-3" as Child>
-            <Link href="/products">Show More</Link>
-          </Button>
-        </div>
-      </section>
+      <FeaturedProducts />
 
       {/* Testimonials Section */}
       {/* <section className="my-16 px-4">

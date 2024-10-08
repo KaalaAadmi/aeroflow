@@ -42,7 +42,9 @@ const Contact = () => {
     formState: { errors },
     reset,
     control,
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+  });
 
   const onSubmit = async (data) => {
     try {
@@ -221,10 +223,18 @@ const Contact = () => {
                     required: "First name is required",
                   })}
                   type="text"
-                  className=" block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
+                  className={cn(
+                    "block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black",
+                    { "border-red-500": errors.firstName }
+                  )}
                   placeholder=""
                   required=""
                 />
+                {errors.firstName && (
+                  <p className="text-red-500 text-xs ml-0.5 font-medium">
+                    {errors?.firstName?.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label htmlFor="lname" className="mb-1 font-medium">
@@ -237,10 +247,18 @@ const Contact = () => {
                     required: "Last name is required",
                   })}
                   type="text"
-                  className=" block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
+                  className={cn(
+                    "block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black",
+                    { "border-red-500": errors.lastName }
+                  )}
                   placeholder=""
                   required=""
                 />
+                {errors.lastName && (
+                  <p className="text-red-500 text-xs ml-0.5 font-medium">
+                    {errors?.lastName?.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="mb-4">
@@ -250,10 +268,20 @@ const Contact = () => {
               </label>
               <input
                 id="tel"
-                {...register("phoneNumber")}
+                {...register("phoneNumber", {
+                  required: "Phone number is required",
+                })}
                 type="tel"
-                className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
+                className={cn(
+                  "block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black",
+                  { "border-red-500": errors.phoneNumber }
+                )}
               />
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-xs ml-0.5 font-mediu">
+                  {errors?.phoneNumber.message}
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="email" className="mb-1 font-medium">
@@ -264,9 +292,16 @@ const Contact = () => {
                 id="email"
                 {...register("email", { required: "Email is required" })}
                 type="text"
-                className="mb-4 block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black"
+                className={cn(
+                  "block h-9 w-full rounded-md border border-solid border-black px-3 py-6 text-sm text-black",
+                  { "border-red-500": errors.email }
+                )}
               />
-              {errors.email && <p role="alert">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-xs ml-0.5 font-mediu">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div className="mb-5 md:mb-6 lg:mb-8">
               <label htmlFor="message" className="mb-1 font-medium">
@@ -277,13 +312,22 @@ const Contact = () => {
                 id="message"
                 placeholder="Message"
                 maxLength={5000}
-                className="mb-2.5 block h-auto min-h-44 w-full rounded-md border border-solid border-black px-3 py-2 text-sm text-black"
+                className={cn(
+                  "block h-auto min-h-44 w-full rounded-md border border-solid border-black px-3 py-2 text-sm text-black",
+                  { "border-red-500": errors.message }
+                )}
                 {...register("message", {
                   validate: {
                     pattern: (value) => !/[!]/.test(value),
                   },
+                  required: "Message is required",
                 })}
               />
+              {errors.message && (
+                <p className="text-red-500 text-xs ml-0.5 font-medium">
+                  {errors.message.message}
+                </p>
+              )}
             </div>
             <div className="mb-5 md:mb-6 lg:mb-8">
               <label htmlFor="option" className="mb-1 font-medium">

@@ -21,8 +21,11 @@ import EditProduct from "@/components/EditProduct";
 import AddProductForm from "@/components/AddProductForm";
 // import Users from "@/components/Users";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function Admin() {
+  const { user } = useUser();
+  // console.log(user);
   const [editingProduct, setEditingProduct] = useState(null);
   const handleEditProduct = (product) => {
     setEditingProduct(product);
@@ -109,11 +112,11 @@ export default function Admin() {
                 <div>
                   <SidebarLink
                     link={{
-                      label: "Manu Arora",
+                      label: user?.fullName,
                       href: "#",
                       icon: (
                         <Image
-                          src="/assets/images/avatar.png"
+                          src={user?.imageUrl}
                           className="h-7 w-7 flex-shrink-0 rounded-full"
                           width={50}
                           height={50}

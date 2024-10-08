@@ -10,9 +10,9 @@ const Footer = () => {
           <div>
             {/* LOGO */}
             <img
-              src="/assets/images/logo-black.svg"
+              src="/assets/images/AeroFlow..png"
               alt="Logo"
-              className="w-48 h-8"
+              className="w-46 h-8"
             />
 
             <p className="font-inter mt-4 max-w-80 text-base font-light text-gray-500">
