@@ -4,12 +4,12 @@
 
 - [x] home
 - [x] about
-- [ ] admin
+- [x] admin
   - [x] add product
   - [x] edit product
   - [x] floor plans
   - [x] products
-  - [ ] dashboard
+  - [-] dashboard
 - [x] faq
 - [x] privacy-policy
 - [x] products
@@ -56,8 +56,8 @@
   - [x] contact
 - [x] form values for contact
 - [x] add google analytics
-- [ ] Dashboard for admin
-  - [ ] charts based on number of queries from google analytics
+- [-] Dashboard for admin
+  - [-] charts based on number of queries from google analytics
 - [ ] Slack Integration
 
 ## GENERAL:
@@ -74,6 +74,9 @@
 - [ ] Custom signup page
 - [ ] Custom signin page
 - [ ] Custom profile page
+- [x] Custom User Button
 - [x] Featured products
   - [x] add featured field in product schema and modify the api route
   - [x] display featured products in homescreen
+- [x] Add skeleton
+- [x] on clicking the enquire button on the product details page, pass the name of the product as query to /contact and fill in the description as "I want to enquire about {product name}"

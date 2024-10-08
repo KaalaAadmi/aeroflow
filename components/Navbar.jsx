@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Menu, Shield, X } from "lucide-react"; // Icons
 import Link from "next/link";
 // import { currentUser } from "@clerk/nextjs/server";
-import { useClerk, UserButton } from "@clerk/nextjs";
+import { useClerk } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
+import UserButton from "./UserButton";
+// import { UserButton } from "@clerk/nextjs";
 
 const Navbar = () => {
   // const [cussrentUser, setCurrentUser] = useState(null);
@@ -48,7 +50,7 @@ const Navbar = () => {
             </a>
             {isSignedIn ? (
               <>
-                <UserButton user={user} signOut={signOut}>
+                {/* <UserButton user={user} signOut={signOut}>
                   <UserButton.MenuItems>
                     {isAdmin && (
                       <UserButton.Action
@@ -60,7 +62,8 @@ const Navbar = () => {
                       />
                     )}
                   </UserButton.MenuItems>
-                </UserButton>
+                </UserButton> */}
+                <UserButton user={user} signOut={signOut} isAdmin={isAdmin} />
               </>
             ) : (
               <Button asChild>
