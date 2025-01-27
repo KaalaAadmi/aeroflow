@@ -1,65 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aeroflow Webstore
 
-## Getting Started
 
-First, run the development server:
+Aeroflow is a responsive e-commerce webstore tailored for the ventilation systems business. It enables clients to explore a wide range of products and easily upload their floor plans for further discussions. The platform also features an intuitive admin panel for managing product listings efficiently.
+
+---
+
+## Key Features
+- **User Profile Management**: Easily manage user profiles, including updating details and connecting external accounts.
+- **Secure Authentication**: Powered by Clerk for seamless and secure user authentication.
+- **Admin Panel**: Dedicated section for administrators to manage user data and app settings.
+- **Responsive Design**: Optimized for both desktop and mobile experiences.
+- **Scalable Backend**: Built with Payload CMS and GraphQL for flexibility and scalability.
+
+---
+
+## Technologies Used
+- **Frontend**: React and Next.js with TailwindCSS for styling.
+- **Backend**: Payload CMS with MongoDB for database management.
+- **Authentication**: Clerk for user authentication.
+- **GraphQL**: For efficient data fetching and management.
+- **UI Components**: NextUI for dropdowns, accordions, and modals.
+
+---
+
+
+## Prerequisites
+Before running the application, ensure the following are installed on your machine:
+1. **Node.js** (v16+)
+2. **npm** or **yarn**
+3. **MongoDB** (local or cloud instance)
+4. **Clerk Account** (for User Management)
+---
+
+## Installation and Setup
+Follow these steps to set up and run the Aeroflow web application:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/KaalaAadmi/aeroflow.git
+cd aeroflow
+```
+### 2. Install Dependencies 
+Install the required dependencies using npm or yarn:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+# OR
+yarn install
+
+```
+## Running the Application
+### 1. Configure Environment Variables
+Modify the .env file in the root directory and add the following environment variables:
+```bash
+NEXT_PUBLIC_CLERK_FRONTEND_API=<Your Clerk Frontend API Key>
+MONGODB_URI=<Your MongoDB Connection String>
+PAYLOAD_SECRET=<Your Payload CMS Secret>
+GRAPHQL_ENDPOINT=<GraphQL API Endpoint>
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> NOTE: `GRAPHQL_ENDPOINT` is your host followed by `/api/graphql`, so for local dev environment, it will be: `http://localhost:3000/api/graphql`
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 2. Run the Application
+Start the development server:
+```bash 
+npm run dev
+# OR
+yarn dev
 
-## Learn More
+```
+The app will be accessible at `http://localhost:3000`
+### 3. Production Build
+To build and serve the app for production:
+```bash 
+npm run build
+npm start
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 6. Summary:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Things to Replace:
+- Replace `https://github.com/KaalaAadmi/aeroflow.git` with the actual repository URL.
+- Replace `<Your Clerk Frontend API Key>`, `<Your MongoDB Connection String>`, and other placeholder values with the actual environment variable names and descriptions.
+- Add your actual support email or contact details under the **Support** section.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-# TODO:
-
-## PAGES:
-
-- [x] home
-- [x] about
-- [ ] admin
-  - [ ] add product
-  - [ ] edit product
-  - [ ] floor plans
-  - [x] products
-  - [ ] dashboard
-- [x] faq
-- [ ] floor plans
-- [x] privacy-policy
-- [x] products
-  - [ ] filters
-- [x] product details page
-- [x] terms-and-conditions
-- [x] login
-- [x] register
-- [ ] profile
-- [x] contact
-
-## COMPONENTS:
-
-- [x] Navbar
-- [x] Product Card for Featured Home
+This `README.md` provides a detailed overview and setup guide for the Aeroflow web application, making it easy for others to understand and run the app.
