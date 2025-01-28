@@ -53,11 +53,18 @@ yarn install
 ### 1. Configure Environment Variables
 Modify the .env file in the root directory and add the following environment variables:
 ```bash
-NEXT_PUBLIC_CLERK_FRONTEND_API=<Your Clerk Frontend API Key>
 MONGODB_URI=<Your MongoDB Connection String>
-PAYLOAD_SECRET=<Your Payload CMS Secret>
-GRAPHQL_ENDPOINT=<GraphQL API Endpoint>
-
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=<Your Clerk Frontend API Key>
+CLERK_SECRET_KEY=<Your Clerk Secret API Key>
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/signin
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/signup
+CLOUDINARY_URL=<Your Cloudinary URL>
+CLOUDINARY_CLOUD_NAME=<Your Cloudinary Cloud Name>
+CLOUDINARY_API_KEY=<Your Cloudinary API Key>
+CLOUDINARY_API_SECRET=<Your Cloudinary API Secret>
+NEXT_PUBLIC_CLOUDINARY_PRESET_NAME=<Your Cloudinary Preset Name>
+NEXT_PUBLIC_URL=<This would be: `http://localhost:3000` while development, otherwise, make it your production URL>
+GOOGLE_CLIENT_ID=<Your Google Analytics Tag>
 ```
 
 > NOTE: `GRAPHQL_ENDPOINT` is your host followed by `/api/graphql`, so for local dev environment, it will be: `http://localhost:3000/api/graphql`
